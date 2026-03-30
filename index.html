@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tiramisu Délice</title>
+  <style>
+    body { margin: 0; font-family: Arial; background: #fff8f0; color:#333; }
+
+    header {
+      background: url('/mnt/data/4e8beef3-1a2a-4a66-ba51-3761ccf41565.png') center/cover;
+      color: white;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    header h1 { font-size: 3rem; margin:0; }
+    header p { font-size: 1.2rem; }
+
+    .info { text-align:center; padding:1rem; background:#f3e2d7; font-weight:bold; }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+    }
+
+    .card:hover { transform: scale(1.05); }
+
+    .card img {
+      width:100%;
+      height:200px;
+      object-fit:cover;
+    }
+
+    .card-content {
+      padding:1rem;
+      text-align:center;
+    }
+
+    .btn {
+      background: #6b3e26;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    #cart {
+      position: fixed;
+      right: 10px;
+      top: 10px;
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      width: 260px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    input { display: block; margin: 5px 0; padding: 5px; width: 100%; }
+
+    .reviews { padding:2rem; }
+
+    .review {
+      margin-bottom:1rem;
+      padding:1rem;
+      background:#fff;
+      border-radius:10px;
+      box-shadow:0 3px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+  <style>
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      color: white;
+      border-radius: 50px;
+      padding: 15px 20px;
+      font-size: 16px;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+    }
+    .whatsapp-float:hover {
+      background: #1ebe5d;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🍰 Tiramisu Délice</h1>
+  <p>Les meilleurs tiramisus faits maison à Noisy-le-Grand</p>
+</header>
+
+<div class="info">
+  📍 Livraison uniquement à Noisy-le-Grand
+</div>
+
+<div id="cart">
+  <h3>🛒 Panier</h3>
+  <ul id="cart-items"></ul>
+  <p>Total: <span id="total">0</span>€</p>
+
+  <h4>📦 Livraison</h4>
+  <input id="nom" placeholder="Nom">
+  <input id="adresse" placeholder="Adresse">
+  <input id="ville" placeholder="Ville (Noisy-le-Grand)">
+
+  <button class="btn" onclick="commander()">Commander</button>
+</div>
+
+<div class="products">
+
+  <div class="card">
+    <img src="/mnt/data/b82e1d85-c3e8-43d2-8d15-38ac17d45de0.png">
+    <div class="card-content">
+      <h3>Spéculos</h3>
+      <p>2€</p>
+      <button class="btn" onclick="addToCart('Spéculos',2)">Ajouter</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9">
+    <div class="card-content">
+      <h3>Oréo</h3>
+      <p>2€</p>
+      <button class="btn" onclick="addToCart('Oréo',2)">Ajouter</button>
+    </div>
+  </div>
+
+</div>
+
+<section class="reviews">
+  <h2>⭐ Avis clients</h2>
+
+  <div class="review">⭐⭐⭐⭐⭐<br>"Trop bon, j’en reprends chaque semaine 😍"</div>
+  <div class="review">⭐⭐⭐⭐⭐<br>"Livraison rapide et tiramisu incroyable"</div>
+  <div class="review">⭐⭐⭐⭐⭐<br>"Le meilleur à Noisy-le-Grand 🔥"</div>
+
+</section>
+
+<script>
+let total = 0;
+let commandeListe = [];
+
+function addToCart(name, price) {
+  let li = document.createElement('li');
+  li.textContent = name + ' - ' + price + '€';
+  document.getElementById('cart-items').appendChild(li);
+  total += price;
+  commandeListe.push(name);
+  document.getElementById('total').textContent = total;
+}
+
+function commander() {
+  const nom = document.getElementById('nom').value;
+  const adresse = document.getElementById('adresse').value;
+  const ville = document.getElementById('ville').value;
+
+  if(ville.toLowerCase() !== 'noisy-le-grand') {
+    alert('❌ Livraison uniquement à Noisy-le-Grand');
+    return;
+  }
+
+  if(!nom || !adresse || !ville || total === 0) {
+    alert('Remplis toutes les infos + ajoute un produit');
+    return;
+  }
+
+  let message = `Bonjour, je souhaite commander :\n- ${commandeListe.join('\n- ')}\n\nTotal: ${total}€\n\nNom: ${nom}\nAdresse: ${adresse}, ${ville}`;
+
+  let url = "https://wa.me/33766617058?text=" + encodeURIComponent(message);
+  window.open(url, '_blank');
+}
+</script>
+
+
+<a class="whatsapp-float" href="https://wa.me/33766617058" target="_blank">
+  📱 Commander sur WhatsApp
+</a>
+
+</body>
+</html>
